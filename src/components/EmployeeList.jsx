@@ -7,27 +7,29 @@ import { toast } from 'react-toastify';
 
 function EmployeeList() {
   const [employees, setEmployees] = useState([]);
-  
 
   useEffect(() => {
     fetchEmployees();
   }, []);
 
   const fetchEmployees = () => {
-    axios.get('http://localhost:3001/employees')
-      .then(res => setEmployees(res.data));
+    axios
+      .get('https://backend-emp1-1.onrender.com/employees')
+      .then((res) => setEmployees(res.data));
   };
 
   const handleDelete = (id) => {
-    axios.delete(`http://localhost:3001/employees/${id}`).then(() => {
-      setEmployees(employees.filter(emp => emp.id !== id));
-      toast.success('Employee deleted successfully!');
-    });
+    axios
+      .delete(`https://backend-emp1-1.onrender.com/employees/${id}`)
+      .then(() => {
+        setEmployees(employees.filter((emp) => emp.id !== id));
+        toast.success('Employee deleted successfully!');
+      });
   };
 
   return (
     <div>
-     <Table responsive bordered hover>
+      <Table responsive bordered hover>
         <thead>
           <tr>
             <th>Name</th>
@@ -37,16 +39,24 @@ function EmployeeList() {
           </tr>
         </thead>
         <tbody>
-          {employees.map(emp => (
+          {employees.map((emp) => (
             <tr key={emp.id}>
               <td>{emp.name}</td>
               <td>{emp.email}</td>
               <td>{emp.position}</td>
               <td>
                 <Link to={`/edit/${emp.id}`}>
-                  <Button color="dark" size="sm" className="me-2">Edit</Button>
+                  <Button color="dark" size="sm" className="me-2">
+                    Edit
+                  </Button>
                 </Link>
-                <Button color="danger" size="sm" onClick={() => handleDelete(emp.id)}>Delete</Button>
+                <Button
+                  color="danger"
+                  size="sm"
+                  onClick={() => handleDelete(emp.id)}
+                >
+                  Delete
+                </Button>
               </td>
             </tr>
           ))}

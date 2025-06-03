@@ -99,37 +99,46 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 function EditEmployee() {
-  const [formData, setFormData] = useState({ name: '', email: '', position: '' });
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    position: '',
+  });
   const [errors, setErrors] = useState({});
   const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/employees/${id}`).then(res => {
-      setFormData(res.data);
-    });
+    axios
+      .get(`https://backend-emp1-1.onrender.com/employees/${id}`)
+      .then((res) => {
+        setFormData(res.data);
+      });
   }, [id]);
 
   const validate = () => {
     const newErrors = {};
     if (!formData.name.trim()) newErrors.name = 'Name is required';
     if (!formData.email.trim()) newErrors.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid';
+    else if (!/\S+@\S+\.\S+/.test(formData.email))
+      newErrors.email = 'Email is invalid';
     if (!formData.position.trim()) newErrors.position = 'Position is required';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleChange = e =>
+  const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      axios.put(`http://localhost:3001/employees/${id}`, formData).then(() => {
-        toast.success('Employee updated successfully!');
-        navigate('/');
-      });
+      axios
+        .put(`https://backend-emp1-1.onrender.com/employees/${id}`, formData)
+        .then(() => {
+          toast.success('Employee updated successfully!');
+          navigate('/');
+        });
     }
   };
 
@@ -192,4 +201,3 @@ function EditEmployee() {
 }
 
 export default EditEmployee;
-
