@@ -8,7 +8,7 @@
 // function AddEmployee() {
 //   const [formData, setFormData] = useState({ name: '', email: '', position: '' });
 //   const [errors, setErrors] = useState({});
- 
+
 //   const navigate = useNavigate();
 
 //   const validate = () => {
@@ -28,10 +28,10 @@
 //     e.preventDefault();
 //     if (validate()) {
 //       axios.post('http://localhost:3001/employees', formData).then(() => {
-      
+
 //         toast.success('Employee added successfully!');
 //         navigate('/');
-        
+
 //       });
 //     }
 //   };
@@ -96,7 +96,11 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 function AddEmployee() {
-  const [formData, setFormData] = useState({ name: '', email: '', position: '' });
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    position: '',
+  });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
@@ -104,22 +108,25 @@ function AddEmployee() {
     const newErrors = {};
     if (!formData.name.trim()) newErrors.name = 'Name is required';
     if (!formData.email.trim()) newErrors.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid';
+    else if (!/\S+@\S+\.\S+/.test(formData.email))
+      newErrors.email = 'Email is invalid';
     if (!formData.position.trim()) newErrors.position = 'Position is required';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleChange = e =>
+  const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      axios.post('http://localhost:3001/employees', formData).then(() => {
-        toast.success('Employee added successfully!');
-        navigate('/');
-      });
+      axios
+        .post('https://backend-emp1-1.onrender.com/employees', formData)
+        .then(() => {
+          toast.success('Employee added successfully!');
+          navigate('/');
+        });
     }
   };
 
@@ -182,4 +189,3 @@ function AddEmployee() {
 }
 
 export default AddEmployee;
-
